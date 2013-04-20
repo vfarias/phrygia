@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <IfModule mod_rewrite.c>
   RewriteEngine on
   # RewriteBase /~some/directory/
@@ -5,3 +6,6 @@
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule (.*) index.php/$1 [NC,L]
 </IfModule>
+=======
+
+>>>>>>> a40bfd3bbebede595a058e4eb31c3a0f824af37a
