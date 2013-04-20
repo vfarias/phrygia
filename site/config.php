@@ -10,6 +10,13 @@
 error_reporting(-1);
 ini_set('display_errors', 1);
 
+/**
+* Set what to show as debug or developer information in the get_debug() theme helper.
+*/
+$phr->config['debug']['display-phrygia'] = false;
+$phr->config['debug']['db-num-queries'] = true;
+$phr->config['debug']['db-queries'] = true;
+
 /*
 * Define session name
 */
@@ -47,6 +54,8 @@ $phr->config['base_url'] = null;
 $phr->config['controllers'] = array(
   'index'     => array('enabled' => true,'class' => 'CCIndex'),
   'developer' => array('enabled' => true,'class' => 'CCDeveloper'),
+  'guestbook' => array('enabled' => true,'class' => 'CCGuestbook'),
+  'user' 	  => array('enabled' => true,'class' => 'CCUser'),
 );
 
 /**
@@ -65,5 +74,12 @@ $phr->config['theme'] = array(
 * querystring  = 2      => index.php?q=controller/method/arg1/arg2/arg3
 */
 $phr->config['url_type'] = 1;
+
+/**
+* Set database(s).
+*/
+$phr->config['database'][0]['dsn'] = 'sqlite:' . PHRYGIA_SITE_PATH . '/data/.ht.sqlite';
+
+$phr->config['session_key']  = 'phrygia';
 
 

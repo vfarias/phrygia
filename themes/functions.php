@@ -17,3 +17,10 @@ function base_url($url) {
 function current_url() {
   return CPhrygia::Instance()->request->current_url;
 }
+
+/**
+* Render all views.
+*/
+function render_views() {
+  return CPhrygia::Instance()->views->Render();
+}
