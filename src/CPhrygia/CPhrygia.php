@@ -39,8 +39,11 @@ class CPhrygia implements ISingleton {
     		$this->db = new CMDatabase($this->config['database'][0]['dsn']);
      }
      
-     // Create a container for all views and theme data
-     $this->views = new CViewContainer();
+    // Create a container for all views and theme data
+    $this->views = new CViewContainer();
+     
+    // Create a object for the user
+    $this->user = new CMUser($this);
   }
   
   

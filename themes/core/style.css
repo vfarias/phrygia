@@ -14,8 +14,17 @@ body{
 #header,
 #main,
 #footer {
-   margin:0 auto;
-   width:970px;
-   background-color:#fff;
-   padding: 1em;
+	margin:0 auto;
+	width:970px;
+	background-color:#fff;
+	padding: 1em;
 }
+#banner{
+	width:600px;
+}
+#login-menu{
+	width:100px;
+	float:right;
+}
+.validation-failed{border:2px solid red;}
+.validation-message{color:red;font-size:smaller;}

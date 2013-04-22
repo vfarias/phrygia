@@ -91,15 +91,14 @@ class CRequest {
     return $url;
   }
   
-    /**
-   * Create a url in the way it should be created.
-   *
-   */
-    /**
-     * Create a url in the way it should be created.
-     *
-     */
-	public function CreateUrl($url=null, $method=null, $arguments=null) {
+	/**
+* Create a url in the way it should be created.
+*
+* @param $url string the relative url or the controller
+* @param $method string the method to use, $url is then the controller or empty for current
+* @param $arguments string the extra arguments to send to the method
+*/
+public function CreateUrl($url=null, $method=null, $arguments=null) {
     // If fully qualified just leave it.
 if(!empty($url) && (strpos($url, '://') || $url[0] == '/')) {
 return $url;

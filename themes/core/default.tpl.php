@@ -6,8 +6,15 @@
   <link rel="stylesheet" href="<?=$stylesheet?>">
 </head>
 <body>
+<div id='wrap-header'>
   <div id="header">
-    <?=$header?>
+    <div id='login-menu'>
+    	<?=login_menu()?>
+    </div>
+    <div id='banner'>
+    	<?=$header?>
+    </div>
+   </div>
   </div>
   <div id='wrap-main'>
     <div id='main' role='main'>

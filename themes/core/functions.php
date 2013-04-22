@@ -56,3 +56,26 @@ function create_url($urlOrController=null, $method=null, $arguments=null) {
   return CPhrygia::Instance()->request->CreateUrl($urlOrController, $method, $arguments);
 }
 
+/**
+* Login menu. Creates a menu which reflects if user is logged in or not.
+*/
+function login_menu() {
+  $phr = CPhrygia::Instance();
+  if($phr->user['isAuthenticated']) {
+    $items = "<a href='" . create_url('user/profile') . "'><img class='gravatar' src='" . get_gravatar(20) . "' alt=''> " . $phr->user['acronym'] . "</a> ";
+    if($phr->user['hasRoleAdministrator']) {
+      $items .= "<a href='" . create_url('acp') . "'>acp</a> ";
+    }
+    $items .= "<a href='" . create_url('user/logout') . "'>logout</a> ";
+  } else {
+    $items = "<a href='" . create_url('user/login') . "'>login</a> ";
+  }
+  return "<nav>$items</nav>";
+}
+
+/**
+* Get a gravatar based on the user's email.
+*/
+function get_gravatar($size=null) {
+  return 'http://www.gravatar.com/avatar/' . md5(strtolower(trim(CPhrygia::Instance()->user['email']))) . '.jpg?' . ($size ? "s=$size" : null);
+}
