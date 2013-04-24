@@ -46,6 +46,14 @@ function get_messages_from_session() {
 }
 
 /**
+* Prepend the theme_url, which is the url to the current theme directory.
+*/
+function theme_url($url) {
+  $phr = CPhrygia::Instance();
+  return "{$phr->request->base_url}themes/{$phr->config['theme']['name']}/{$url}";
+}
+
+/**
 * Create a url to an internal resource.
 *
 * @param string the whole url or the controller. Leave empty for current controller.
@@ -78,4 +86,23 @@ function login_menu() {
 */
 function get_gravatar($size=null) {
   return 'http://www.gravatar.com/avatar/' . md5(strtolower(trim(CPhrygia::Instance()->user['email']))) . '.jpg?' . ($size ? "s=$size" : null);
+}
+
+/**
+* Escape data to make it safe to write in the browser.
+*/
+function esc($str) {
+  return htmlEnt($str);
+}
+
+
+/**
+* Filter data according to a filter. Uses CMContent::Filter()
+*
+* @param $data string the data-string to filter.
+* @param $filter string the filter to use.
+* @returns string the filtered string.
+*/
+function filter_data($data, $filter) {
+  return CMContent::Filter($data, $filter);
 }

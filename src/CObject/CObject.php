@@ -33,7 +33,7 @@ class CObject {
     $this->user		= &$phr->user;
   }
   
-  	protected function RedirectTo($urlOrController=null, $method=null) {
+  	protected function RedirectTo($urlOrController=null, $method=null, $arguments=null) {
     $phr = CPhrygia::Instance();
     if(isset($phr->config['debug']['db-num-queries']) && $phr->config['debug']['db-num-queries'] && isset($phr->db)) {
       $this->session->SetFlash('database_numQueries', $this->db->GetNumQueries());
@@ -45,7 +45,7 @@ class CObject {
 $this->session->SetFlash('timer', $phr->timer);
     }
     $this->session->StoreInSession();
-    header('Location: ' . $this->request->CreateUrl($urlOrController, $method));
+    header('Location: ' . $this->request->CreateUrl($urlOrController, $method, $arguments));
   }
   
 
@@ -54,8 +54,8 @@ $this->session->SetFlash('timer', $phr->timer);
 	*
 	* @param string method name the method, default is index method.
 	*/
-	protected function RedirectToController($method=null) {
-    $this->RedirectTo($this->request->controller, $method);
+	protected function RedirectToController($method=null, $arguments=null) {
+    $this->RedirectTo($this->request->controller, $method, $arguments);
   }
   
   	/**
@@ -64,22 +64,28 @@ $this->session->SetFlash('timer', $phr->timer);
   	* @param string controller name the controller or null for current controller.
   	* @param string method name the method, default is current method.
   	*/
-  	protected function RedirectToControllerMethod($controller=null, $method=null) {
+  	protected function RedirectToControllerMethod($controller=null, $method=null, $arguments=null) {
   		$controller = is_null($controller) ? $this->request->controller : null;
   		$method = is_null($method) ? $this->request->method : null;	
-  		$this->RedirectTo($this->request->CreateUrl($controller, $method));
+  		$this->RedirectTo($this->request->CreateUrl($controller, $method, $arguments));
   }
   
-  	/**
-  	* Save a message in the session. Uses $this->session->AddMessage()
-  	*
-  	* @param $type string the type of message, for example: notice, info, success, warning, error.
-  	* @param $message string the message.
-  	*/
-  	protected function AddMessage($type, $message) {
-    $this->session->AddMessage($type, $message);
+	/**
+	* Save a message in the session. Uses $this->session->AddMessage()
+	*
+	* @param $type string the type of message, for example: notice, info, success, warning, error.
+	* @param $message string the message.
+	* @param $alternative string the message if the $type is set to false, defaults to null.
+	*/
+	public function AddMessage($type, $message, $alternative=null) {
+		if($type === false) {
+			$type = 'error';
+			$message = $alternative;
+		} else if($type === true) {
+			$type = 'success';
+		}
+		$this->session->AddMessage($type, $message);
   }
-  
   	/**
   	* Create an url. Uses $this->request->CreateUrl()
   	*
