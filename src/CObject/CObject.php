@@ -9,6 +9,7 @@ class CObject {
 	/**
 	* Members
 	*/
+	protected $phr;
 	protected $config;
 	protected $request;
 	protected $data;
@@ -24,6 +25,7 @@ class CObject {
    	if(!$phr){
     $phr = CPhrygia::Instance();
     }
+    $this->phr 		= &$phr;
     $this->config   = &$phr->config;
     $this->request  = &$phr->request;
     $this->data     = &$phr->data;
@@ -55,7 +57,7 @@ $this->session->SetFlash('timer', $phr->timer);
 	* @param string method name the method, default is index method.
 	*/
 	protected function RedirectToController($method=null, $arguments=null) {
-    $this->RedirectTo($this->request->controller, $method, $arguments);
+    $this->phr->RedirectTo($this->request->controller, $method, $arguments);
   }
   
   	/**
@@ -65,9 +67,7 @@ $this->session->SetFlash('timer', $phr->timer);
   	* @param string method name the method, default is current method.
   	*/
   	protected function RedirectToControllerMethod($controller=null, $method=null, $arguments=null) {
-  		$controller = is_null($controller) ? $this->request->controller : null;
-  		$method = is_null($method) ? $this->request->method : null;	
-  		$this->RedirectTo($this->request->CreateUrl($controller, $method, $arguments));
+  		$this->phr->RedirectTo($this->request->CreateUrl($controller, $method, $arguments));
   }
   
 	/**
@@ -78,13 +78,7 @@ $this->session->SetFlash('timer', $phr->timer);
 	* @param $alternative string the message if the $type is set to false, defaults to null.
 	*/
 	protected function AddMessage($type, $message, $alternative=null) {
-		if($type === false) {
-			$type = 'error';
-			$message = $alternative;
-		} else if($type === true) {
-			$type = 'success';
-		}
-		$this->session->AddMessage($type, $message);
+		return $this->phr->AddMessage($type, $message, $alternative);
   }
   	/**
   	* Create an url. Uses $this->request->CreateUrl()
@@ -94,7 +88,7 @@ $this->session->SetFlash('timer', $phr->timer);
   	* @param $arguments string the extra arguments to send to the method
   	*/
   	protected function CreateUrl($urlOrController=null, $method=null, $arguments=null) {
-  		return $this->request->CreateUrl($urlOrController, $method, $arguments);
+  		return $this->phr->CreateUrl($urlOrController, $method, $arguments);
   }	
 
 }
