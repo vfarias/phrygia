@@ -8,7 +8,7 @@ Du kan ladda ner Phrygia från https://github.com/vfarias/phrygia eller genom ko
 
 ####Installera
 Om du inte lägger Phrygia i root behöver du ändra .htaccess. Detta är en dold fil i huvudkatalogen. Raden du behöver ändra är 
-<code>//RewriteBase /~some/directory/phrygia/</code> till det directory som du använder.
+<code># RewriteBase /~redirect/to/your/desired/directory/</code> till det directory som du använder.
 
 Du behöver också göra katalogen site/data skrivbar. Detta kan göras genom Filezilla eller med kommandot: <code>cd phrygia chmod 777 site/data</code>
 
