@@ -30,7 +30,7 @@ För sidor skriv in page i type-fältet. För bloginlägg skriv post. I filter k
 ##Åtkomst och administration
 ####Begränsa åtkomst
 Åtkomst till controllers hanteras av [code]$phr->config['controllers'][/code] på rad 65 i config.php. 
-Genom att lägga in akronymen för en grupp i enabled, får alla medlemmar i gruppen tillgång till controllern.
+Genom att lägga in akronymen för en grupp i enabled, får alla medlemmar i gruppen tillgång till controllern. Du kan också lägga in 'anon', vilket ger full tillgång till alla. 
 
 ####Admin Controller
 Om du loggar in som administratör finns en acp-länk i din login-meny som leder till det administrativa gränssnittet. 
