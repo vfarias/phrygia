@@ -60,19 +60,20 @@ $phr->config['create_new_users'] = true;
 * CCDeveloper and call the method "dump" in that class. This process is managed in:
 * $p->FrontControllerRoute();
 * which is called in the frontcontroller phase from index.php.
+* Access is determined by 'enabled'. Options are admin and user. Leaving it empty will leave the controller inaccessible for everyone. 
 */
 $phr->config['controllers'] = array(
-  'index'     => array('enabled' => true,'class' => 'CCIndex'),
-  'developer' => array('enabled' => true,'class' => 'CCDeveloper'),
-  'guestbook' => array('enabled' => true,'class' => 'CCGuestbook'),
-  'content'   => array('enabled' => true,'class' => 'CCContent'),
-  'blog'   	  => array('enabled' => true,'class' => 'CCBlog'),
-  'page'   => array('enabled' => true,'class' => 'CCPage'),
-  'user' 	  => array('enabled' => true,'class' => 'CCUser'),
-  'acp'       => array('enabled' => true,'class' => 'CCAdminControlPanel'),
-  'theme'     => array('enabled' => true,'class' => 'CCTheme'),
-  'module' => array('enabled' => true,'class' => 'CCModules'),
-  'my'        => array('enabled' => true,'class' => 'CCMycontroller'), 
+  'index'     => array('enabled' => array('user', 'anon'),'class' => 'CCIndex'),
+  'developer' => array('enabled' => array('user', 'anon'),'class' => 'CCDeveloper'),
+  'guestbook' => array('enabled' => array('user', 'anon'),'class' => 'CCGuestbook'),
+  'content'   => array('enabled' => array('user', 'anon'),'class' => 'CCContent'),
+  'blog'   	  => array('enabled' => array('user', 'anon'),'class' => 'CCBlog'),
+  'page'	  => array('enabled' => array('user', 'anon'),'class' => 'CCPage'),
+  'user' 	  => array('enabled' => array('user', 'anon'),'class' 	=> 'CCUser'),
+  'acp'       => array('enabled' => array('user', 'anon'),'class' => 'CCAdminControlPanel'),
+  'theme'     => array('enabled' => array('user', 'anon'),'class' => 'CCTheme'),
+  'module'	  => array('enabled' => array('user', 'anon'),'class' => 'CCModules'),
+  'my'        => array('enabled' => array('user', 'anon'),'class' => 'CCMycontroller'), 
   
 );
 
@@ -91,15 +92,17 @@ $phr->config['routing'] = array(
 * Create hardcoded menus and map them to a theme region through $ly->config['theme'].
 */
 $phr->config['menus'] = array(
-  'navbar' => array(
-    'home'      => array('label'=>'Home', 'url'=>'home'),
+  'admin_navbar' => array(
+    'acp'		=> array('label'=>'Control Panel', 'url'=>'acp'),
     'modules'   => array('label'=>'Modules', 'url'=>'module'),
     'content'   => array('label'=>'Content', 'url'=>'content'),
     'guestbook' => array('label'=>'Guestbook', 'url'=>'guestbook'),
     'blog'      => array('label'=>'Blog', 'url'=>'blog'),
   ),
   'my-navbar' => array(
-    'home' => array('label'=>'About Me', 'url'=>'my'),
+  	'install'      => array('label'=>'Install', 'url'=>'home'),
+    'home' => array('label'=>'Home', 'url'=>'my'),
+    'about' => array('label'=>'About', 'url'=>'my/about'),
     'blog' => array('label'=>'My Blog', 'url'=>'my/blog'),
     'guestbook' => array('label'=>'Guestbook', 'url'=>'my/guestbook'),
   ),
@@ -129,6 +132,7 @@ $phr->config['menus'] = array(
 * available to the template files.
 */
 $phr->config['theme'] = array(
+  'name'			=> 'grid',
   'path'            => 'site/themes/mytheme',
   'parent'          => 'themes/grid',
   'stylesheet'      => 'style.css',
@@ -139,12 +143,13 @@ $phr->config['theme'] = array(
     'footer',
   ),
   'menu_to_region' => array('my-navbar'=>'navbar'),
+  'admin_menu_to_region' => array('admin_navbar'=>'navbar'),
   // Add static entries for use in the template file.
   'data' => array(
     'header' => 'Phrygia',
     'slogan' => 'A PHP-based MVC-inspired CMF',
-    'favicon' => 'logo_80x80.png',
-    'logo' => 'logo_80x80.png',
+    'favicon' => 'logo.png',
+    'logo' => 'logo.png',
     'logo_width'  => 80,
     'logo_height' => 80,
     'footer' => '<p>Phrygia &copy; by Victor Arias</p>',

@@ -15,8 +15,8 @@ class CMUser extends CObject implements IHasSQL, ArrayAccess, IModule {
   /**
 * Constructor
 */
-  public function __construct($ly=null) {
-    parent::__construct($ly);
+  public function __construct($phr=null) {
+    parent::__construct($phr);
     $profile = $this->session->GetAuthenticatedUser();
     $this->profile = is_null($profile) ? array() : $profile;
     $this['isAuthenticated'] = is_null($profile) ? false : true;
@@ -54,8 +54,13 @@ class CMUser extends CObject implements IHasSQL, ArrayAccess, IModule {
       'insert into user2group' => 'INSERT INTO User2Groups (idUser,idGroups) VALUES (?,?);',
       'check user password' => 'SELECT * FROM User WHERE (acronym=? OR email=?);',
       'get group memberships' => 'SELECT * FROM Groups AS g INNER JOIN User2Groups AS ug ON g.id=ug.idGroups WHERE ug.idUser=?;',
+      'get group content' => 'SELECT * FROM User AS u INNER JOIN User2Groups AS ug ON u.id=ug.idUser WHERE ug.idGroups=?;',
       'update profile' => "UPDATE User SET name=?, email=?, updated=datetime('now') WHERE id=?;",
+      'update group' => "UPDATE Groups SET name=?, updated=datetime('now') WHERE id=?;",
       'update password' => "UPDATE User SET algorithm=?, salt=?, password=?, updated=datetime('now') WHERE id=?;",
+      'select users' => 'SELECT * FROM User;',
+      'select groups' => 'SELECT * FROM Groups;',
+      'delete from user'  => 'DELETE FROM User WHERE id=?;',
      );
     if(!isset($queries[$key])) {
       throw new Exception("No such SQL query, key '$key' was not found.");
@@ -128,7 +133,9 @@ class CMUser extends CObject implements IHasSQL, ArrayAccess, IModule {
     if($user) {
       $user['isAuthenticated'] = true;
       $user['groups'] = $this->db->ExecuteSelectQueryAndFetchAll(self::SQL('get group memberships'), array($user['id']));
+       $user['roles'] = "";
       foreach($user['groups'] as $val) {
+      	  $user['roles'] .= $val['acronym']." ";
         if($val['id'] == 1) {
           $user['hasRoleAdmin'] = true;
         }
@@ -239,4 +246,86 @@ class CMUser extends CObject implements IHasSQL, ArrayAccess, IModule {
     }
     return true;
   }
+  
+    /**
+   * Create new group.
+   *
+   * @param $acronym string the acronym.
+   * @param $name string the full name of the group.
+   * @returns boolean true if group was created or else false and sets failure message in session.
+   */
+  public function CreateGroup($acronym, $name) {
+    $this->db->ExecuteQuery(self::SQL('insert into group'), array($acronym, $name));
+    if($this->db->RowCount() == 0) {
+      $this->AddMessage('error', "Failed to create user.");
+      return false;
+    }
+    return true;
+  }
+  
+  public function Delete($name){
+  	 $this->db->ExecuteQuery(self::SQL('delete from user'), array($name));  
+  }
+  
+    /**
+    * List all users.
+    *
+    * @param $args array with various settings for the request. Default is null.
+	* @returns array with listing or null if empty.
+	*/
+  public function ListAllUsers($args=null) {
+    try {
+        return $this->db->ExecuteSelectQueryAndFetchAll(self::SQL('select users', $args));
+    } catch(Exception $e) {
+      echo $e;
+      return null;
+    }
+  }
+  
+    /**
+    * List all users.
+    *
+    * @param $args array with various settings for the request. Default is null.
+	* @returns array with listing or null if empty.
+	*/
+  public function ListAllGroups($args=null) {
+    try {
+        return $this->db->ExecuteSelectQueryAndFetchAll(self::SQL('select groups', $args));
+    } catch(Exception $e) {
+      echo $e;
+      return null;
+    }
+  }
+  
+  
+  
+  /**
+   * Checks if user has admin privileges.
+   *
+   * @returns boolean true if user is an admin.
+   */
+    public function IsAdmin(){
+    	return $this['hasRoleAdmin'];
+    }
+    
+ /**
+  * Check if user is a regular user.
+  *
+  * @returns boolean true if user is a regular user.
+  */
+  public function IsUser() {
+    return $this['hasRoleUser'];
+  }
+  
+  
+    /**
+   * Checks if user is in a certain group.
+   *
+   * @param $role string containing the acronym of the desired group.
+   * @returns boolean true if user is in the group.
+   */
+    public function HasRole($role) {
+    return preg_match("/\b$role\b/i", $this['roles']);
+  }
+    
 }

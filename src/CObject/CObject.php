@@ -36,18 +36,7 @@ class CObject {
   }
   
   	protected function RedirectTo($urlOrController=null, $method=null, $arguments=null) {
-    $phr = CPhrygia::Instance();
-    if(isset($phr->config['debug']['db-num-queries']) && $phr->config['debug']['db-num-queries'] && isset($phr->db)) {
-      $this->session->SetFlash('database_numQueries', $this->db->GetNumQueries());
-    }
-    if(isset($phr->config['debug']['db-queries']) && $phr->config['debug']['db-queries'] && isset($phr->db)) {
-      $this->session->SetFlash('database_queries', $this->db->GetQueries());
-    }
-    if(isset($phr->config['debug']['timer']) && $phr->config['debug']['timer']) {
-$this->session->SetFlash('timer', $phr->timer);
-    }
-    $this->session->StoreInSession();
-    header('Location: ' . $this->request->CreateUrl($urlOrController, $method, $arguments));
+    $this->phr->RedirectTo($urlOrController, $method, $arguments);
   }
   
 
@@ -57,7 +46,7 @@ $this->session->SetFlash('timer', $phr->timer);
 	* @param string method name the method, default is index method.
 	*/
 	protected function RedirectToController($method=null, $arguments=null) {
-    $this->phr->RedirectTo($this->request->controller, $method, $arguments);
+    $this->phr->RedirectToController($method, $arguments);
   }
   
   	/**
@@ -67,7 +56,7 @@ $this->session->SetFlash('timer', $phr->timer);
   	* @param string method name the method, default is current method.
   	*/
   	protected function RedirectToControllerMethod($controller=null, $method=null, $arguments=null) {
-  		$this->phr->RedirectTo($this->request->CreateUrl($controller, $method, $arguments));
+  		$this->phr->RedirectToControllerMethod($controller, $method, $arguments);
   }
   
 	/**

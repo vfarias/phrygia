@@ -11,6 +11,9 @@ function base_url($url=null) {
   return CPhrygia::Instance()->request->base_url . trim($url, '/');
 }
 
+
+
+
 /**
 * Return the current url.
 */
@@ -59,6 +62,14 @@ function create_url($urlOrController=null, $method=null, $arguments=null) {
   return CPhrygia::Instance()->CreateUrl($urlOrController, $method, $arguments);
 }
 
+function create_admin_url($urlOrController=null, $method=null, $arguments=null) {
+	if(IsAdmin()){
+  return CPhrygia::Instance()->CreateUrl($urlOrController, $method, $arguments);
+  	}
+  	else return"";
+}
+
+
 /**
 * Print debuginformation from the framework.
 */
@@ -100,7 +111,7 @@ function login_menu() {
   $phr = CPhrygia::Instance();
   if($phr->user['isAuthenticated']) {
     $items = "<a href='" . create_url('user/profile') . "'><img class='gravatar' src='" . get_gravatar(20) . "' alt=''> " . $phr->user['acronym'] . "</a> ";
-    if($phr->user['hasRoleAdministrator']) {
+    if(HasRole('Admin')) {
       $items .= "<a href='" . create_url('acp') . "'>acp</a> ";
     }
     $items .= "<a href='" . create_url('user/logout') . "'>logout</a> ";
@@ -142,4 +153,8 @@ function filter_data($data, $filter) {
 */
 function region_has_content($region='default' /*...*/) {
   return CPhrygia::Instance()->views->RegionHasView(func_get_args());
+}
+
+function HasRole($role){
+  return CPhrygia::Instance()->user->HasRole($role);
 }

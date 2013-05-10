@@ -21,7 +21,7 @@ class CFormElement implements ArrayAccess{
   public function __construct($name, $attributes=array()) {
     $this->attributes = $attributes;
     $this['name'] = $name;
-    if(is_callable('CLydia::Instance()')) {
+    if(is_callable('CPhrygia::Instance()')) {
       $this->characterEncoding = CPhrygia::Instance()->config['character_encoding'];
     } else {
       $this->characterEncoding = 'UTF-8';

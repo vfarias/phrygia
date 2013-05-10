@@ -83,7 +83,14 @@ class CPhrygia implements ISingleton {
     $classExists           = false;
 
     if($controllerExists) {
-      $controllerEnabled    = ($this->config['controllers'][$controller]['enabled'] == true);
+    	foreach($this->config['controllers'][$controller]['enabled'] as $val) {
+    		if($this->user->HasRole($val) || $val =='anon'){
+    		$controllerEnabled    =  true;
+    		}
+      	}
+      	 if(!$controllerEnabled){
+      		die("403 error: Access forbidden.");	
+      	}
       $className               = $this->config['controllers'][$controller]['class'];
       $classExists           = class_exists($className);
     }
@@ -131,7 +138,7 @@ class CPhrygia implements ISingleton {
       $parentUrl  = $this->request->base_url . $this->config['theme']['parent'];
     }
    
-    // Add stylesheet name to the $ly->data array
+    // Add stylesheet name to the $phr->data array
     $this->data['stylesheet'] = $this->config['theme']['stylesheet'];
    
     // Make the theme urls available as part of $phr
@@ -143,6 +150,15 @@ class CPhrygia implements ISingleton {
       foreach($this->config['theme']['menu_to_region'] as $key => $val) {
         $this->views->AddString($this->DrawMenu($key), null, $val);
       }
+    }
+  
+    // Map admin menu to region if defined
+    if($this->user->HasRole("admin")){
+    if(is_array($this->config['theme']['admin_menu_to_region'])) {
+      foreach($this->config['theme']['admin_menu_to_region'] as $key => $val) {
+        $this->views->AddString($this->DrawMenu($key), null, $val);
+      }
+    }
     }
    
     // Include the global functions.php and the functions.php that are part of the theme
