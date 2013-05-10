@@ -60,7 +60,7 @@ $phr->config['create_new_users'] = true;
 * CCDeveloper and call the method "dump" in that class. This process is managed in:
 * $p->FrontControllerRoute();
 * which is called in the frontcontroller phase from index.php.
-* Access is determined by 'enabled'. Options are admin and user. Leaving it empty will leave the controller inaccessible for everyone. 
+* Access is determined by 'enabled'. Options are group acronyms as well as 'anon', which gives everyone access. Leaving it empty will leave the controller inaccessible for everyone. 
 */
 $phr->config['controllers'] = array(
   'index'     => array('enabled' => array('user', 'anon'),'class' => 'CCIndex'),
