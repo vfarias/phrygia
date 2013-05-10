@@ -4,7 +4,7 @@
 ##Installation
 
 ####Hämta
-Du kan ladda ner Phrygia från https://github.com/vfarias eller genom kommandot <code>git clone https://github.com/vfarias.git</code>
+Du kan ladda ner Phrygia från https://github.com/vfarias eller genom kommandot <code>git clone https://github.com/vfarias/phrygia.git</code>
 
 ####Installera
 Om du inte lägger Phrygia i root behöver du ändra .htaccess. Detta är en dold fil i huvudkatalogen. Raden du behöver ändra är 
