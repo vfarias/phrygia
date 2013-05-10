@@ -13,7 +13,6 @@ Om du inte lägger Phrygia i root behöver du ändra .htaccess. Detta är en dol
 Du behöver också göra katalogen site/data skrivbar. Detta kan göras genom Filezilla eller med kommandot: <code>cd phrygia chmod 777 site/data</code>
 
 Slutligen behöver modulerna initieras. Detta görs genom att gå till phrygia/module/install. Alternativt kan du gå till phrygia/home och klicka på länken längst ner på sidan.
-Två användare ska
 
 ##Utseende
 Header, footer, slogan, logo, navigeringsmenyer och favicon kan alla ändras i 'data' under <code>$phr->config['theme']</code>. 
